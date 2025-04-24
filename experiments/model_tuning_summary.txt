@@ -1,0 +1,22 @@
+Uber Trip Data Model Tuning Summary
+==================================
+
+1. Random Forest Regressor
+   Best parameters: {'n_estimators': 200, 'min_samples_split': 5, 'min_samples_leaf': 4, 'max_depth': 30, 'bootstrap': True}
+   Original RMSE: 2.6722, R²: 0.9143
+   Tuned RMSE: 2.6432, R²: 0.9162
+   Improvement - RMSE: 1.08%, R²: 0.20%
+
+2. Gradient Boosting Regressor
+   Best parameters: {'n_estimators': 200, 'min_samples_split': 10, 'max_depth': 7, 'learning_rate': 0.2}
+   Original RMSE: 2.8165, R²: 0.9048
+   Tuned RMSE: 2.5428, R²: 0.9224
+   Improvement - RMSE: 9.72%, R²: 1.94%
+
+3. Random Forest Classifier
+   Best parameters: {'n_estimators': 50, 'min_samples_split': 5, 'min_samples_leaf': 2, 'max_depth': 30, 'class_weight': 'balanced_subsample', 'bootstrap': False}
+   Original accuracy: 0.9838
+   Tuned accuracy: 0.9835
+   Improvement: -0.02%
+
+Final recommendation: Gradient Boosting for fare prediction with RMSE 2.5428 and R² 0.9224

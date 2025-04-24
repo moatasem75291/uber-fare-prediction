@@ -172,3 +172,20 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# VS Code settings
+.vscode
+
+# data and files
+*.csv
+*.tsv
+business report.docx
+EDA_Visualizations_Report.pdf
+NotebookLM Mind Map (1).png
+Uber.pdf
+
+# models
+best_random_forest_classifier.pkl
+best_random_forest_regressor.pkl
+experiments/best_gradient_boosting_regressor.pkl
