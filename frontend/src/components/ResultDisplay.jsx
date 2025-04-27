@@ -7,6 +7,16 @@ function ResultDisplay({ loading, error, prediction, liveRecommendation }) {
     const fullTextRef = useRef('');
     const charIndexRef = useRef(0);
     const streamSpeedRef = useRef(30); // ms per character
+    const streamingTimerRef = useRef(null);
+
+    // Clean up any ongoing streaming when component unmounts
+    useEffect(() => {
+        return () => {
+            if (streamingTimerRef.current) {
+                clearTimeout(streamingTimerRef.current);
+            }
+        };
+    }, []);
 
     // Animate fare when prediction changes
     useEffect(() => {
@@ -41,26 +51,34 @@ function ResultDisplay({ loading, error, prediction, liveRecommendation }) {
 
     // Handle streaming of live recommendation when it changes
     useEffect(() => {
-        if (liveRecommendation && !prediction && !isStreaming) {
+        if (liveRecommendation && !prediction) {
             startStreamingText(liveRecommendation);
         }
     }, [liveRecommendation, prediction]);
 
     const startStreamingText = (text) => {
         console.log(`Starting streaming text: ${text}`);
+
+        // Clean up any ongoing streaming process
+        if (streamingTimerRef.current) {
+            clearTimeout(streamingTimerRef.current);
+            streamingTimerRef.current = null;
+        }
+
         // Reset state for new streaming
         setStreamedText('');
         charIndexRef.current = 0;
-        fullTextRef.current = " " + text;
+        fullTextRef.current = " " + text;  // Keep the space prefix
         setIsStreaming(true);
 
         const streamText = () => {
             if (charIndexRef.current < fullTextRef.current.length) {
-                setStreamedText(prev => prev + fullTextRef.current.charAt(charIndexRef.current));
+                setStreamedText(fullTextRef.current.substring(0, charIndexRef.current + 1));
                 charIndexRef.current++;
-                setTimeout(streamText, streamSpeedRef.current);
+                streamingTimerRef.current = setTimeout(streamText, streamSpeedRef.current);
             } else {
                 setIsStreaming(false);
+                streamingTimerRef.current = null;
             }
         };
 
